@@ -1,0 +1,1 @@
+{"version":3,"file":"timeStampable.entity.js","sourceRoot":"","sources":["../../src/Generics/timeStampable.entity.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,qCAA+E;AAE/E,MAAa,aAAa;CASzB;AALC;IAHC,IAAA,0BAAgB,EAAC;QAChB,MAAM,EAAE,KAAK;KACd,CAAC;8BACS,IAAI;gDAAC;AAEhB;IADC,IAAA,0BAAgB,GAAE;8BACR,IAAI;gDAAC;AAEhB;IADC,IAAA,0BAAgB,GAAE;8BACR,IAAI;gDAAC;AARlB,sCASC"}
