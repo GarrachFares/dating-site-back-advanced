@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserEntity } from './entity/user.entity';
 import { AddUserDto } from './dto/add-user.dto';
+import { CredentialsDto } from "./dto/credentials.dto";
 
 @Controller('user')
 export class UserController {
@@ -15,8 +16,23 @@ export class UserController {
   findOneById(@Param() id: string): Promise<UserEntity> {
     return this.userService.findOne(id);
   }
-  @Post()
+  /*@Post()
   addUser(@Body() addUserDto: AddUserDto): Promise<UserEntity> {
     return this.userService.addUser(addUserDto);
+  }*/
+
+  @Post()
+  register(
+    @Body() registerUserDto: AddUserDto) : Promise<Partial<UserEntity>>
+  {
+      return this.userService.register(registerUserDto);
   }
+
+  @Post('login')
+  login(
+    @Body() credentials: CredentialsDto) : Promise<Partial<UserEntity>>
+  {
+    return this.userService.login(credentials);
+  }
+
 }

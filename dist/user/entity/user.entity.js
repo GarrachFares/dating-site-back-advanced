@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserEntity = void 0;
 const typeorm_1 = require("typeorm");
 const timeStampable_entity_1 = require("../../Generics/timeStampable.entity");
+const user_role_enum_1 = require("../../Generics/enums/user-role.enum");
 let UserEntity = class UserEntity extends timeStampable_entity_1.timeStampable {
 };
 __decorate([
@@ -23,7 +24,7 @@ __decorate([
         unique: true,
     }),
     __metadata("design:type", String)
-], UserEntity.prototype, "pseudoName", void 0);
+], UserEntity.prototype, "username", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
@@ -32,6 +33,26 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], UserEntity.prototype, "lastName", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], UserEntity.prototype, "email", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], UserEntity.prototype, "password", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], UserEntity.prototype, "salt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
+        type: "enum",
+        enum: user_role_enum_1.UserRoleEnum,
+        default: user_role_enum_1.UserRoleEnum.USER
+    }),
+    __metadata("design:type", String)
+], UserEntity.prototype, "role", void 0);
 UserEntity = __decorate([
     (0, typeorm_1.Entity)('user')
 ], UserEntity);

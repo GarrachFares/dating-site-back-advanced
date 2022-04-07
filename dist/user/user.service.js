@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("./entity/user.entity");
 const typeorm_2 = require("typeorm");
+const bcrypt = require("bcrypt");
 let UserService = class UserService {
     constructor(userRepository) {
         this.userRepository = userRepository;
@@ -32,6 +33,41 @@ let UserService = class UserService {
     }
     async addUser(addUserDto) {
         return this.userRepository.save(addUserDto);
+    }
+    async register(userData) {
+        const user = this.userRepository.create(Object.assign({}, userData));
+        user.salt = await bcrypt.genSalt();
+        user.password = await bcrypt.hash(user.password, user.salt);
+        try {
+            await this.userRepository.save(user);
+        }
+        catch (e) {
+            throw new common_1.ConflictException(`Le username et le email doivent être unique`);
+        }
+        return {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            role: user.role
+        };
+    }
+    async login(credentials) {
+        const { username, password } = credentials;
+        const user = await this.userRepository.createQueryBuilder("user")
+            .where("user.username = :username or user.email = :username", { username })
+            .getOne();
+        if (!user)
+            throw new common_1.NotFoundException("username or password incorrect ");
+        const hashedPassword = await bcrypt.hash(password, user.salt);
+        if (user.password === hashedPassword) {
+            return {
+                username: user.username,
+                email: user.email
+            };
+        }
+        else {
+            throw new common_1.NotFoundException("username or password incorrect ");
+        }
     }
 };
 UserService = __decorate([

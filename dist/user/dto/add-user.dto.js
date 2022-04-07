@@ -27,5 +27,13 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], AddUserDto.prototype, "lastName", void 0);
+__decorate([
+    (0, class_validator_1.IsEmail)(),
+    __metadata("design:type", String)
+], AddUserDto.prototype, "email", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], AddUserDto.prototype, "password", void 0);
 exports.AddUserDto = AddUserDto;
 //# sourceMappingURL=add-user.dto.js.map
