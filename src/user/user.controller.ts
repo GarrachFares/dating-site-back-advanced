@@ -21,18 +21,5 @@ export class UserController {
     return this.userService.addUser(addUserDto);
   }*/
 
-  @Post()
-  register(
-    @Body() registerUserDto: AddUserDto) : Promise<Partial<UserEntity>>
-  {
-      return this.userService.register(registerUserDto);
-  }
-
-  @Post('login')
-  login(
-    @Body() credentials: CredentialsDto) : Promise<Partial<UserEntity>>
-  {
-    return this.userService.login(credentials);
-  }
 
 }
