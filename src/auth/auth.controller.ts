@@ -1,4 +1,6 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
+import { Request } from 'express';
+
 import { AddUserDto } from 'src/user/dto/add-user.dto';
 import { CredentialsDto } from 'src/user/dto/credentials.dto';
 import { AuthService } from './auth.service';
@@ -26,7 +28,11 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('guardtest')
-  test(){
+  test(
+    @Req() request:Request
+  ){
+    console.log("extracted user",request.user);
+    
     return{
       msg:'passport jwt auth guard works!!!'
     }
