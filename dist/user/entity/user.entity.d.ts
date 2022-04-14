@@ -8,4 +8,7 @@ export declare class UserEntity extends timeStampable {
     password: string;
     salt: string;
     role: string;
+    birthDate: string;
+    coutry: string;
+    city: string;
 }

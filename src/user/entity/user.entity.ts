@@ -18,7 +18,9 @@ export class UserEntity extends timeStampable {
   @Column()
   lastName: string;
 
-  @Column()
+  @Column({
+    unique: true,
+  })
   email : string ;
 
   @Column()
@@ -31,4 +33,14 @@ export class UserEntity extends timeStampable {
     default : UserRoleEnum.USER
   })
   role : string ;
+
+  @Column({ type: 'date' , nullable : true})
+  birthDate: string;
+
+  @Column()
+  coutry : string ;
+
+  @Column()
+  city : string ;
+
 }

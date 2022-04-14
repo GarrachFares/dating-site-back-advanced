@@ -4,7 +4,7 @@ export class AddUserDto {
   @IsString()
   @Max(50)
   @Min(3)
-  pseudoName: string;
+  username: string;
   @IsString()
   firstName: string;
   @IsString()

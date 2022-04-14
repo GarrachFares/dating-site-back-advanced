@@ -18,7 +18,7 @@ __decorate([
     (0, class_validator_1.Max)(50),
     (0, class_validator_1.Min)(3),
     __metadata("design:type", String)
-], AddUserDto.prototype, "pseudoName", void 0);
+], AddUserDto.prototype, "username", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
