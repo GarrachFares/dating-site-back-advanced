@@ -62,7 +62,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], UserEntity.prototype, "coutry", void 0);
+], UserEntity.prototype, "country", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)

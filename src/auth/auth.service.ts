@@ -4,6 +4,7 @@ import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcrypt' ;
 import { CredentialsDto } from "../user/dto/credentials.dto";
 import { JwtService } from '@nestjs/jwt';
+import { use } from "passport";
 
 @Injectable()
 export class AuthService {
@@ -34,16 +35,28 @@ export class AuthService {
         * login via username or email
         * */
         const user = await this.userService.findUserByUsername(username)
-        if(!user) throw new NotFoundException("username incorrect ") ;
+        if(!user) {
+          throw new NotFoundException("username ou password incorrect ") ;
+        }
         const hashedPassword = await bcrypt.hash(password, user.salt);
-        if(user.password!==hashedPassword)
-          throw new NotFoundException(" password incorrect ") ;
-        
-        const {id,firstName,lastName,email,role} = user
-        username = user.username 
-        const  token = this.jwtService.sign(
-            { id,firstName,lastName,username,email,role}
-        )
-        return {token}
+        if(hashedPassword === user.password){
+          const payload = {
+            firstname:user.firstName,
+            lastname:user.lastName,
+            country:user.country,
+            city:user.city,
+            username:user.username,
+            email:user.email,
+            role:user.role
+          }
+          const jwt = await this.jwtService.sign(payload);
+          return {
+            "access_token": jwt
+          }
+        }
+        else{
+          throw new NotFoundException("username ou password incorrect ") ;
+        }
+          
       }
 }

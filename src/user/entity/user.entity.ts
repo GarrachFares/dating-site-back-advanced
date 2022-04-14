@@ -38,7 +38,7 @@ export class UserEntity extends timeStampable {
   birthDate: string;
 
   @Column()
-  coutry : string ;
+  country : string ;
 
   @Column()
   city : string ;

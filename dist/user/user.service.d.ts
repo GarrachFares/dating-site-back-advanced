@@ -7,7 +7,7 @@ export declare class UserService {
     findAll(): Promise<UserEntity[]>;
     findOne(id: string): Promise<UserEntity>;
     remove(id: string): Promise<void>;
-    addUser(addUserDto: AddUserDto | UserEntity): Promise<(AddUserDto | UserEntity) & UserEntity>;
+    addUser(addUserDto: AddUserDto | UserEntity): Promise<(UserEntity | AddUserDto) & UserEntity>;
     createUser(addUserDto: AddUserDto): Promise<UserEntity>;
     findUserByUsername(username: string): Promise<UserEntity>;
 }
