@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { ConfigModule } from "@nestjs/config";
 import { AuthModule } from './auth/auth.module';
+import { ChatModule } from './chat/chat.module';
 import * as dotenv from 'dotenv'
 
 dotenv.config();
@@ -26,7 +27,8 @@ dotenv.config();
       isGlobal:true
     }),
     UserModule,
-    AuthModule],
+    AuthModule,
+    ChatModule],
   controllers: [AppController],
   providers: [AppService],
 })
