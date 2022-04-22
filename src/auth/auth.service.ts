@@ -47,11 +47,12 @@ export class AuthService {
             city:user.city,
             username:user.username,
             email:user.email,
-            role:user.role
+            role:user.role ,
+            id:user.id
           }
           const jwt = await this.jwtService.sign(payload);
           return {
-            "access_token": jwt
+            "Token": jwt
           }
         }
         else{
