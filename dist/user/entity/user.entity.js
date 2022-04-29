@@ -17,8 +17,8 @@ const room_entity_1 = require("../../chat/entity/room.entity");
 let UserEntity = class UserEntity extends timeStampable_entity_1.timeStampable {
 };
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
-    __metadata("design:type", String)
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    __metadata("design:type", Number)
 ], UserEntity.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)({

@@ -22,7 +22,7 @@ export class RoomService {
     return await this.roomRepository.save(newRoom);
   }
 
-  async getRoomsForUser(userId: string, options: IPaginationOptions): Promise<Pagination<RoomI>> {
+  async getRoomsForUser(userId: number, options: IPaginationOptions): Promise<Pagination<RoomI>> {
     const query = this.roomRepository
     .createQueryBuilder('room')
     .leftJoin('room.users', 'user')

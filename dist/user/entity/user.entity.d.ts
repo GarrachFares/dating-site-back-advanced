@@ -1,7 +1,7 @@
 import { timeStampable } from '../../Generics/timeStampable.entity';
 import { RoomEntity } from 'src/chat/entity/room.entity';
 export declare class UserEntity extends timeStampable {
-    id: string;
+    id: number;
     username: string;
     firstName: string;
     lastName: string;

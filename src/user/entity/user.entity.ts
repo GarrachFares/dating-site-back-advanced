@@ -5,8 +5,8 @@ import { RoomEntity } from 'src/chat/entity/room.entity';
 
 @Entity('user')
 export class UserEntity extends timeStampable {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column({
     unique: true,
