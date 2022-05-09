@@ -60,8 +60,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('createRoom')
   async onCreateRoom(socket: Socket, room: any) {
-    //console.log(socket.data.user);
-    //console.log(room.users) ;
+    // console.log(socket.data.user);
+    // console.log(room.users) ;
     return await this.roomService.createRoom(room,socket.data.user);
   
   }
