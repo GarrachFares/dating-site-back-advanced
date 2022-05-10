@@ -27,6 +27,8 @@ export class RoomService {
     .createQueryBuilder('room')
     .leftJoin('room.users', 'user')
     .where('user.id = :userId', {userId})
+    .leftJoinAndSelect('room.users', 'all_users')
+    .orderBy('room.updated_at', 'DESC') ;
 
     return paginate(query, options);
   }

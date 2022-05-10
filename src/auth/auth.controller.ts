@@ -40,4 +40,12 @@ export class AuthController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Post('editprofil')
+  editProfil(
+    @Body() editUserDto: any) : Promise<any>//token later
+  {
+      return this.authService.register(editUserDto);
+  }
+
 }

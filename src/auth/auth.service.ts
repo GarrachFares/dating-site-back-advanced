@@ -61,6 +61,41 @@ export class AuthService {
           
       }
 
+      async editProfil(credentials: any): Promise<any> {
+        console.log("credentials");
+        
+        console.log(credentials);
+        console.log(credentials.id);
+        
+        
+        const user = await this.userService.findOne(credentials.id)
+        if(!user) {
+          throw new NotFoundException("username ou password incorrect ") ;
+          
+        }
+        
+        
+        console.log(user);
+        
+        user.username = credentials.username
+        user.firstName = credentials.firstname
+        user.lastName =credentials.lastName
+        user.email = credentials.email;
+        user.country = credentials.country
+        user.city = credentials.city
+        console.log("after update");
+        console.log(user);
+        
+        
+        try {
+          await this.userService.addUser(user);
+        } catch (e) {
+          throw new ConflictException(`username ${user.username} or email ${user.email} already exists`);
+        }
+        return "user edited!!"
+      }
+
+
 
       verifyJwt(jwt: string): Promise<any> {
         return this.jwtService.verifyAsync(jwt);
