@@ -14,6 +14,7 @@ const typeorm_1 = require("typeorm");
 const timeStampable_entity_1 = require("../../Generics/timeStampable.entity");
 const user_role_enum_1 = require("../../Generics/enums/user-role.enum");
 const room_entity_1 = require("../../chat/entity/room.entity");
+const message_entity_1 = require("../../chat/entity/message.entity");
 let UserEntity = class UserEntity extends timeStampable_entity_1.timeStampable {
 };
 __decorate([
@@ -72,6 +73,10 @@ __decorate([
     (0, typeorm_1.ManyToMany)(() => room_entity_1.RoomEntity, room => room.users),
     __metadata("design:type", Array)
 ], UserEntity.prototype, "rooms", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => message_entity_1.MessageEntity, messages => messages.user),
+    __metadata("design:type", Array)
+], UserEntity.prototype, "messages", void 0);
 UserEntity = __decorate([
     (0, typeorm_1.Entity)('user')
 ], UserEntity);

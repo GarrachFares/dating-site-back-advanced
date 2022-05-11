@@ -9,6 +9,8 @@ import { UserService } from 'src/user/user.service';
 import {  Server } from 'socket.io';
 import { RoomService } from '../service/room-service/room/room.service';
 import { PageI } from '../interfaces/page.interface';
+import { MessageEntity } from "../entity/message.entity";
+import { MessageService } from "../service/room-service/message.service";
 
 @WebSocketGateway({ cors: { origin: ['https://hoppscotch.io', 'http://localhost:3000', 'http://localhost:4200'] } })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -16,7 +18,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
 
-  constructor(private roomService:RoomService, private userService: UserService,private jwtService:JwtService,private authService: AuthService) {}
+  constructor(private roomService:RoomService,
+              private userService: UserService,
+              private jwtService:JwtService,
+              private authService: AuthService,
+              private messageService : MessageService) {}
 
   async handleConnection(socket: Socket) {
 
@@ -77,6 +83,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const rooms = await this.roomService.getRoomsForUser(socket.data.user.id,page);
     rooms.meta.currentPage -- //angular paginator
     return this.server.to(socket.id).emit('rooms', rooms);
+  }
+
+  @SubscribeMessage('sendMessage')
+  async onSendMessage(socket : Socket,message:MessageEntity){
+    await this.messageService.createMessage(message,socket.data.user);
   }
   
 

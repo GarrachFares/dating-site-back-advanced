@@ -1,7 +1,8 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { timeStampable } from '../../Generics/timeStampable.entity';
 import { UserRoleEnum } from "../../Generics/enums/user-role.enum";
 import { RoomEntity } from 'src/chat/entity/room.entity';
+import { MessageEntity } from "../../chat/entity/message.entity";
 
 @Entity('user')
 export class UserEntity extends timeStampable {
@@ -46,5 +47,8 @@ export class UserEntity extends timeStampable {
 
   @ManyToMany(() => RoomEntity, room => room.users)
   rooms: RoomEntity[]
+
+  @OneToMany(()=>MessageEntity,messages=>messages.user)
+  messages : MessageEntity[]
 
 }
