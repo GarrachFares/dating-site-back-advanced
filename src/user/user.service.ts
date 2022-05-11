@@ -37,6 +37,10 @@ export class UserService {
 
   }
 
-  
-  
+
+  async updateUser(user: UserEntity ) {
+    const id = user.id
+    console.log(user);
+    return await this.userRepository.update(id,user);
+  }
 }

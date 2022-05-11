@@ -62,38 +62,20 @@ export class AuthService {
           
       }
 
-      async editProfil(credentials: any): Promise<any> {
-        console.log("credentials");
-        
-        console.log(credentials);
-        console.log(credentials.id);
-        
-        
-        const user = await this.userService.findOne(credentials.id)
+
+      async editProfile(credentials: any): Promise<any> {
+        const user = await this.userService.findUserByUsername(credentials.username)
         if(!user) {
-          throw new NotFoundException("username ou password incorrect ") ;
-          
+          throw new NotFoundException("You are not allowed to change username ") ;
         }
-        
-        
-        console.log(user);
-        
         user.username = credentials.username
-        user.firstName = credentials.firstname
+        user.firstName = credentials.firstName
         user.lastName =credentials.lastName
         user.email = credentials.email;
         user.country = credentials.country
         user.city = credentials.city
-        console.log("after update");
-        console.log(user);
-        
-        
-        try {
-          await this.userService.addUser(user);
-        } catch (e) {
-          throw new ConflictException(`username ${user.username} or email ${user.email} already exists`);
-        }
-        return "user edited!!"
+        await this.userService.updateUser(user);
+        return user
       }
 
 

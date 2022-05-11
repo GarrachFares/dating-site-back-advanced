@@ -45,7 +45,8 @@ export class AuthController {
   editProfil(
     @Body() editUserDto: any) : Promise<any>//token later
   {
-      return this.authService.register(editUserDto);
+    console.log("Username :  ",editUserDto.username);
+      return this.authService.editProfile(editUserDto);
   }
 
 }

@@ -10,4 +10,5 @@ export declare class UserService {
     addUser(addUserDto: AddUserDto | UserEntity): Promise<(UserEntity | AddUserDto) & UserEntity>;
     createUser(addUserDto: AddUserDto): Promise<UserEntity>;
     findUserByUsername(username: string): Promise<UserEntity>;
+    updateUser(user: UserEntity): Promise<import("typeorm").UpdateResult>;
 }

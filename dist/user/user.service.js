@@ -41,6 +41,11 @@ let UserService = class UserService {
             .where("user.username = :username or user.email = :username", { username })
             .getOne();
     }
+    async updateUser(user) {
+        const id = user.id;
+        console.log(user);
+        return await this.userRepository.update(id, user);
+    }
 };
 UserService = __decorate([
     (0, common_1.Injectable)(),
