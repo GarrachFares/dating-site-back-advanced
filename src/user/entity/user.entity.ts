@@ -38,10 +38,10 @@ export class UserEntity extends timeStampable {
   @Column({ type: 'date' , nullable : true})
   birthDate: string;
 
-  @Column()
+  @Column({nullable:true})
   country : string ;
 
-  @Column()
+  @Column({nullable:true})
   city : string ;
 
   @ManyToMany(() => RoomEntity, room => room.users)

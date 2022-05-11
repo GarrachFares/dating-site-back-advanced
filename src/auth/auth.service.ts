@@ -17,11 +17,12 @@ export class AuthService {
         const oldPassword = user.password
         user.salt = await bcrypt.genSalt();
         user.password = await bcrypt.hash(user.password, user.salt);
-        try {
+        await this.userService.addUser(user)
+        /*try {
           await this.userService.addUser(user);
         } catch (e) {
           throw new ConflictException(`username ${user.username} or email ${user.email} already exists`);
-        }
+        }*/
         
         //log the user in
         user.password = oldPassword
@@ -98,6 +99,9 @@ export class AuthService {
 
 
       verifyJwt(jwt: string): Promise<any> {
-        return this.jwtService.verifyAsync(jwt);
+        /*
+        * added Ignore Expiration to true ,should revert it after complete chat
+        * */
+        return this.jwtService.verifyAsync(jwt,{ignoreExpiration:true});
       }
 }

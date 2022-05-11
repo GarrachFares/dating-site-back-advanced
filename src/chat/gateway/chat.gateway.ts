@@ -44,6 +44,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         this.server.emit('message','test')
       }
     } catch {
+      console.log("Some error Occurred , Disconnecting ...");
       return this.disconnect(socket);
     }
   }
@@ -60,15 +61,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('createRoom')
   async onCreateRoom(socket: Socket, room: any) {
-<<<<<<< HEAD
     //console.log(socket.data.user);
     console.log(room.users) ;
     console.log(room);
-    
-=======
     // console.log(socket.data.user);
     // console.log(room.users) ;
->>>>>>> 89a1b03b3457d9432d8abc424f8030aa5848b800
     return await this.roomService.createRoom(room,socket.data.user);
   
   }
