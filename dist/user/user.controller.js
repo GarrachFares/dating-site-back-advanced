@@ -15,6 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
+const multer_1 = require("multer");
+const platform_express_1 = require("@nestjs/platform-express");
+const upload_utils_1 = require("./upload.utils");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -24,6 +27,16 @@ let UserController = class UserController {
     }
     findOneById(id) {
         return this.userService.findOne(id);
+    }
+    async uploadedFile(file) {
+        const response = {
+            originalname: file.originalname,
+            filename: file.filename,
+        };
+        return response;
+    }
+    seeUploadedFile(image, res) {
+        return res.sendFile(image, { root: './uploads/profile-pictures' });
     }
 };
 __decorate([
@@ -39,6 +52,28 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "findOneById", null);
+__decorate([
+    (0, common_1.Post)('upload'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('image', {
+        storage: (0, multer_1.diskStorage)({
+            destination: './uploads/profile-pictures',
+            filename: upload_utils_1.editFileName,
+        }),
+        fileFilter: upload_utils_1.imageFileFilter,
+    })),
+    __param(0, (0, common_1.UploadedFile)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "uploadedFile", null);
+__decorate([
+    (0, common_1.Get)('/image/:imgpath'),
+    __param(0, (0, common_1.Param)('imgpath')),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "seeUploadedFile", null);
 UserController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])

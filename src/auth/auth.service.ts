@@ -88,6 +88,7 @@ export class AuthService {
           id:user.id,
           birthdate:user.birthDate
         }
+        console.log(payload);
         const jwt = await this.jwtService.sign(payload);
         return {
           "Token": jwt
