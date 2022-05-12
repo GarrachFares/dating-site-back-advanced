@@ -11,6 +11,8 @@ import { RoomService } from '../service/room-service/room/room.service';
 import { PageI } from '../interfaces/page.interface';
 import { MessageEntity } from "../entity/message.entity";
 import { MessageService } from "../service/room-service/message.service";
+import { Observable } from "rxjs";
+import { MessageI, MessagePaginateI } from "../interfaces/message.interface";
 
 @WebSocketGateway({ cors: { origin: ['https://hoppscotch.io', 'http://localhost:3000', 'http://localhost:4200'] } })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -27,7 +29,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async handleConnection(socket: Socket) {
 
     console.log("on connect");
-        this.server.emit('message','test')
+    this.server.emit('message','test')
     try {
       
       const decodedToken = await this.authService.verifyJwt(socket.handshake.headers.authorization);
@@ -44,6 +46,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         socket.data.user = user;
         const rooms = await this.roomService.getRoomsForUser( user.id, {page: 1, limit: 10});
         rooms.meta.currentPage --  //angular paginator
+        //this.server.to(socket.id).emit('messages', messages);
         // Only emit rooms to the specific connected client
         return this.server.to(socket.id).emit('rooms', rooms);
         console.log("on connect");
@@ -89,6 +92,13 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async onSendMessage(socket : Socket,message:MessageEntity){
     await this.messageService.createMessage(message,socket.data.user);
   }
-  
 
+  @SubscribeMessage('getMessages')
+  async onGetMessages(socket : Socket){
+    console.log("Hiiiiiiiiiiii");
+   const messages  = await this.messageService.findMessages()
+    //console.log(messages);
+    this.server.to(socket.id).emit('messages', messages);
+    return messages
+  }
 }
