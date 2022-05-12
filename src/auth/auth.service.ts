@@ -64,19 +64,36 @@ export class AuthService {
 
 
       async editProfile(credentials: any): Promise<any> {
-        const user = await this.userService.findUserByUsername(credentials.username)
+        const user = await this.userService.findOne(credentials.id);
         if(!user) {
           throw new NotFoundException("You are not allowed to change username ") ;
         }
         user.username = credentials.username
-        user.firstName = credentials.firstName
-        user.lastName =credentials.lastName
+        user.firstName = credentials.firstname
+        user.lastName =credentials.lastname
         user.email = credentials.email;
         user.country = credentials.country
         user.city = credentials.city
         await this.userService.updateUser(user);
-        return user
+        
+        //test
+        const payload = {
+          firstname:user.firstName,
+          lastname:user.lastName,
+          country:user.country,
+          city:user.city,
+          username:user.username,
+          email:user.email,
+          role:user.role ,
+          id:user.id,
+          birthdate:user.birthDate
+        }
+        const jwt = await this.jwtService.sign(payload);
+        return {
+          "Token": jwt
+        }
       }
+     
 
 
 
