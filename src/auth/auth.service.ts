@@ -94,6 +94,27 @@ export class AuthService {
           "Token": jwt
         }
       }
+
+      async changePassword(passwords:any): Promise<any>{
+
+        const user = await this.userService.findOne(passwords.id);
+        const hashedPassword = await bcrypt.hash(passwords.oldpassword, user.salt);
+        if(hashedPassword === user.password){
+
+          user.salt = await bcrypt.genSalt();
+          user.password = await bcrypt.hash(passwords.newpassword, user.salt);
+          await this.userService.updateUser(user);
+
+          return " succes: password changed"   
+          
+        }
+        else{
+          return "error: wrong password"   
+                    
+          
+        }
+
+      }
      
 
 

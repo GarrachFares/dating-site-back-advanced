@@ -49,4 +49,14 @@ export class AuthController {
       return this.authService.editProfile(editUserDto);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Post('changepassword')
+  changePassword(
+    @Body() passwords: any) : Promise<any>//token later
+  {
+    console.log("old password :  ",passwords.oldpassword);
+    console.log("new password :  ",passwords.newpassword);
+      return this.authService.changePassword(passwords);
+  }
+
 }
