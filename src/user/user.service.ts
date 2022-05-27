@@ -5,12 +5,14 @@ import { Repository } from 'typeorm';
 import { AddUserDto } from './dto/add-user.dto';
 
 import { CredentialsDto } from "./dto/credentials.dto";
+import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
+    
   ) {}
   async findAll(): Promise<UserEntity[]> {
     return await this.userRepository.find();
@@ -43,4 +45,6 @@ export class UserService {
     console.log(user);
     return await this.userRepository.update(id,user);
   }
+
+  
 }

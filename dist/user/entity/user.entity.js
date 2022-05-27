@@ -77,6 +77,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => message_entity_1.MessageEntity, messages => messages.user),
     __metadata("design:type", Array)
 ], UserEntity.prototype, "messages", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], UserEntity.prototype, "image", void 0);
 UserEntity = __decorate([
     (0, typeorm_1.Entity)('user')
 ], UserEntity);

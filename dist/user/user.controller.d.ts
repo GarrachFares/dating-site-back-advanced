@@ -5,9 +5,4 @@ export declare class UserController {
     constructor(userService: UserService);
     findAll(): Promise<UserEntity[]>;
     findOneById(id: string): Promise<UserEntity>;
-    uploadedFile(file: any): Promise<{
-        originalname: any;
-        filename: any;
-    }>;
-    seeUploadedFile(image: any, res: any): any;
 }

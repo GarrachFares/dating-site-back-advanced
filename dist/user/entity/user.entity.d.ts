@@ -15,4 +15,5 @@ export declare class UserEntity extends timeStampable {
     city: string;
     rooms: RoomEntity[];
     messages: MessageEntity[];
+    image: string;
 }

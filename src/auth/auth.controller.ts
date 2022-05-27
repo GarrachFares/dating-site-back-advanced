@@ -1,9 +1,12 @@
-import { Body, Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { Request } from 'express';
+import { diskStorage } from 'multer';
 import { User } from 'src/decorators/user.decorator';
 
 import { AddUserDto } from 'src/user/dto/add-user.dto';
 import { CredentialsDto } from 'src/user/dto/credentials.dto';
+import { editFileName, imageFileFilter } from 'src/user/upload.utils';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
@@ -57,6 +60,41 @@ export class AuthController {
     console.log("old password :  ",passwords.oldpassword);
     console.log("new password :  ",passwords.newpassword);
       return this.authService.changePassword(passwords);
+  }
+
+
+  @UseGuards(JwtAuthGuard)
+  @Post('upload')
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './uploads/profile-pictures',
+        filename: editFileName,
+      }),
+      fileFilter: imageFileFilter,
+    }),
+  )
+  async uploadedFile(@UploadedFile() file,@User() user) {
+    console.log(file);
+    console.log(user);
+    return this.authService.ProfileImage(file.filename,user.id)
+    //const profil = await this.userService.findOne(user.id);
+    //profil.image = file.filename;
+    //await this.userService.updateUser(profil);
+    //const response = {
+      //originalname: file.originalname,
+      //filename: file.filename,
+    //};
+    
+    //return response;
+  }
+
+  @Get('/image/:imgpath')
+  seeUploadedFile(@Param('imgpath') image, @Res() res) {
+
+    console.log("sending profil image back");
+    
+    return res.sendFile(image, { root: './uploads/profile-pictures' });
   }
 
 }

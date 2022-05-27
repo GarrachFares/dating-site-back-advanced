@@ -51,4 +51,7 @@ export class UserEntity extends timeStampable {
   @OneToMany(()=>MessageEntity,messages=>messages.user)
   messages : MessageEntity[]
 
+  @Column({nullable: true})
+    image: string;
+
 }

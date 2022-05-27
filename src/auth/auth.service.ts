@@ -22,7 +22,7 @@ export class AuthService {
           await this.userService.addUser(user);
         } catch (e) {
           throw new ConflictException(`username ${user.username} or email ${user.email} already exists`);
-        }*/
+        }*/ 
         
         //log the user in
         user.password = oldPassword
@@ -49,7 +49,9 @@ export class AuthService {
             username:user.username,
             email:user.email,
             role:user.role ,
-            id:user.id
+            id:user.id,
+            image:user.image,
+            birthdate:user.birthDate
           }
           const jwt = await this.jwtService.sign(payload);
           return {
@@ -116,6 +118,37 @@ export class AuthService {
 
       }
      
+
+
+
+      async ProfileImage(image: any,id:any): Promise<any> {
+        const user = await this.userService.findOne(id);
+        if(!user) {
+          throw new NotFoundException("You are not allowed to change username ") ;
+        }
+       
+        user.image = image
+        await this.userService.updateUser(user);
+        
+        //test
+        const payload = {
+          firstname:user.firstName,
+          lastname:user.lastName,
+          country:user.country,
+          city:user.city,
+          username:user.username,
+          email:user.email,
+          role:user.role ,
+          id:user.id,
+          birthdate:user.birthDate,
+          image:user.image
+        }
+        console.log(payload);
+        const jwt = await this.jwtService.sign(payload);
+        return {
+          "Token": jwt
+        }
+      }
 
 
 
