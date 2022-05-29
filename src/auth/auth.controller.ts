@@ -97,4 +97,16 @@ export class AuthController {
     return res.sendFile(image, { root: './uploads/profile-pictures' });
   }
 
+
+  @UseGuards(JwtAuthGuard)
+  @Post('add')
+  addCats(
+    @Body() categories: any,@User() user) : Promise<any>//token later
+  {
+    console.log("catssss :  ",categories);
+      return this.authService.addCategories(user.id,categories) ;
+  }
+
+  
+
 }

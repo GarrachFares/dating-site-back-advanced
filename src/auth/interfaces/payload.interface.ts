@@ -9,5 +9,7 @@ export interface PayloadInterface {
     email: string;
     role: string;
     image:string;
+    birthdate:string;
+    categories:string[];
     
   }

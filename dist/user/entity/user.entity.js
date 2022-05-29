@@ -81,6 +81,10 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "image", void 0);
+__decorate([
+    (0, typeorm_1.Column)("simple-array"),
+    __metadata("design:type", Array)
+], UserEntity.prototype, "categoris", void 0);
 UserEntity = __decorate([
     (0, typeorm_1.Entity)('user')
 ], UserEntity);
