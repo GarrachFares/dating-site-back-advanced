@@ -1,6 +1,6 @@
 
 export interface UserI {
-    id?: string;
+    id?: number;
     email?: string;
     username?: string;
     password?: string;
@@ -9,5 +9,4 @@ export interface UserI {
     birthdate?:string;
     firstname?:string;
     lastname?:string;
-
   }
