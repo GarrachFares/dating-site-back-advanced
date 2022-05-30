@@ -8,6 +8,7 @@ import { use } from "passport";
 
 @Injectable()
 export class AuthService {
+  
     constructor(private userService: UserService , private jwtService : JwtService) {}
 
     async register(userData : AddUserDto) {
@@ -142,6 +143,34 @@ export class AuthService {
           id:user.id,
           birthdate:user.birthDate,
           image:user.image
+        }
+        console.log(payload);
+        const jwt = await this.jwtService.sign(payload);
+        return {
+          "Token": jwt
+        }
+      }
+
+      async addCategories(id:any,cats:string[]): Promise<any> {
+        const user = await this.userService.findOne(id);
+        if(!user) {
+          throw new NotFoundException("You are not allowed to change username ") ;
+        }
+       
+        user.categoris = cats
+        await this.userService.updateUser(user);
+        const payload = {
+          firstname:user.firstName,
+          lastname:user.lastName,
+          country:user.country,
+          city:user.city,
+          username:user.username,
+          email:user.email,
+          role:user.role ,
+          id:user.id,
+          birthdate:user.birthDate,
+          image:user.image,
+          categories:user.categoris
         }
         console.log(payload);
         const jwt = await this.jwtService.sign(payload);
