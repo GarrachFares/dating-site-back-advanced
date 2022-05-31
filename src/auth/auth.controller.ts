@@ -98,14 +98,13 @@ export class AuthController {
   }
 
 
-  @UseGuards(JwtAuthGuard)
-  @Post('add')
-  addCats(
-    @Body() categories: any,@User() user) : Promise<any>//token later
-  {
-    console.log("catssss :  ",categories);
-      return this.authService.addCategories(user.id,categories) ;
-  }
+  // @UseGuards(JwtAuthGuard)
+  // @Post('add')
+  // addCats(@Body() categories: any,@User() user) : Promise<any>//token later
+  // {
+  //   console.log("catssss :  ",categories);
+  //     return this.authService.addCategories(user.id,categories) ;
+  // }
 
   
 

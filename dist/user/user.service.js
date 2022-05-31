@@ -17,9 +17,11 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("./entity/user.entity");
 const typeorm_2 = require("typeorm");
+const category_entity_1 = require("../chat/entity/category.entity");
 let UserService = class UserService {
-    constructor(userRepository) {
+    constructor(userRepository, categoryRepository) {
         this.userRepository = userRepository;
+        this.categoryRepository = categoryRepository;
     }
     async findAll() {
         return await this.userRepository.find();
@@ -46,11 +48,24 @@ let UserService = class UserService {
         console.log(user);
         return await this.userRepository.update(id, user);
     }
+    async addCategories(cats, user) {
+        if (!user) {
+            throw new common_1.NotFoundException("You are not allowed to change username ");
+        }
+        const categories = await this.categoryRepository.createQueryBuilder('category')
+            .where("category.id IN (:categories)", { categories: cats })
+            .getMany();
+        console.log("categories", categories);
+        user.categories = categories;
+        return this.userRepository.save(user);
+    }
 };
 UserService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, (0, typeorm_1.InjectRepository)(category_entity_1.CategoryEntity)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

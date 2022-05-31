@@ -14,9 +14,10 @@ import { ConnectedUserService } from './service/connected-user/connected-user.se
 import { JoinedRoomEntity } from './entity/joined.room.entity';
 import { JoinedRoomService } from './service/joined-room/joined-room.service';
 import { MessageService } from './service/message/message.service';
+import { CategoryEntity } from './entity/category.entity';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([RoomEntity,MessageEntity,ConnectedUserEntity,MessageEntity,JoinedRoomEntity]),AuthModule,UserModule,JwtModule.register({
+  imports:[TypeOrmModule.forFeature([RoomEntity,MessageEntity,ConnectedUserEntity,MessageEntity,JoinedRoomEntity,CategoryEntity]),AuthModule,UserModule,JwtModule.register({
     secret: process.env.SECRET,
     signOptions: { expiresIn: '10h' },
   }),

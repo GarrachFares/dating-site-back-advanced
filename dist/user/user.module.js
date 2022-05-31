@@ -13,11 +13,12 @@ const user_service_1 = require("./user.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("./entity/user.entity");
 const platform_express_1 = require("@nestjs/platform-express");
+const category_entity_1 = require("../chat/entity/category.entity");
 let UserModule = class UserModule {
 };
 UserModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([user_entity_1.UserEntity]),
+        imports: [typeorm_1.TypeOrmModule.forFeature([user_entity_1.UserEntity, category_entity_1.CategoryEntity]),
             platform_express_1.MulterModule.register({
                 dest: './uploads/profile-pictures',
             })],

@@ -3,6 +3,7 @@ import { RoomEntity } from 'src/chat/entity/room.entity';
 import { MessageEntity } from "../../chat/entity/message.entity";
 import { ConnectedUserEntity } from "src/chat/entity/connected.user.entity";
 import { JoinedRoomEntity } from "src/chat/entity/joined.room.entity";
+import { CategoryEntity } from "src/chat/entity/category.entity";
 export declare class UserEntity extends timeStampable {
     id: number;
     username: string;
@@ -21,4 +22,5 @@ export declare class UserEntity extends timeStampable {
     messages: MessageEntity[];
     image: string;
     categoris: string[];
+    categories: CategoryEntity[];
 }
