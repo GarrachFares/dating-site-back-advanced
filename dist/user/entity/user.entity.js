@@ -93,6 +93,10 @@ __decorate([
     __metadata("design:type", String)
 ], UserEntity.prototype, "image", void 0);
 __decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], UserEntity.prototype, "sex", void 0);
+__decorate([
     (0, typeorm_1.Column)("simple-array"),
     __metadata("design:type", Array)
 ], UserEntity.prototype, "categoris", void 0);
