@@ -1,15 +1,10 @@
-import { Body, Controller, Get, Param, Post, Res, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Req, Res, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { UserService } from './user.service';
 import { UserEntity } from './entity/user.entity';
-import { AddUserDto } from './dto/add-user.dto';
-import { CredentialsDto } from "./dto/credentials.dto";
-import { diskStorage } from 'multer';
-import { FileInterceptor } from "@nestjs/platform-express";
-import { editFileName, imageFileFilter } from "./upload.utils";
+
+import { User } from 'src/decorators/user.decorator';
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
-import { User } from "src/decorators/user.decorator";
-import { AuthService } from "src/auth/auth.service";
-import { use } from "passport";
+
 
 
 @Controller('user')
@@ -20,10 +15,20 @@ export class UserController {
   findAll(): Promise<UserEntity[]> {
     return this.userService.findAll();
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/addcategories')
+  addCategories(@Body() categories: any,@User() user): Promise<UserEntity> {
+    console.log("user : ",user);
+   return this.userService.addCategories(categories.categories,user);
+
+  }
+
   @Get('/:id')
   findOneById(@Param() id: string): Promise<UserEntity> {
     return this.userService.findOne(id);
   }
+
 
   
 

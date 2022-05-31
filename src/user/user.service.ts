@@ -6,6 +6,7 @@ import { AddUserDto } from './dto/add-user.dto';
 
 import { CredentialsDto } from "./dto/credentials.dto";
 import { JwtService } from "@nestjs/jwt";
+import { CategoryEntity } from "src/chat/entity/category.entity";
 
 @Injectable()
 export class UserService {
@@ -13,6 +14,9 @@ export class UserService {
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
     
+    @InjectRepository(CategoryEntity)
+    private readonly categoryRepository: Repository<CategoryEntity>
+ 
   ) {}
   async findAll(): Promise<UserEntity[]> {
     return await this.userRepository.find();
@@ -45,6 +49,40 @@ export class UserService {
     console.log(user);
     return await this.userRepository.update(id,user);
   }
+
+
+  async addCategories(cats:number[],user:UserEntity): Promise<UserEntity> {
+    //const user = await this.userService.findOne(id);
+    if(!user) {
+      throw new NotFoundException("You are not allowed to change username ") ;
+    }
+    const categories = await this.categoryRepository.createQueryBuilder('category')
+    .where("category.id IN (:categories)", { categories: cats })
+    .getMany();
+    console.log("categories",categories);
+    user.categories= categories
+    return this.userRepository.save(user);
+  }
+
+  async getCategoriesForUser(id:number): Promise<CategoryEntity[]> {
+    const user = await this.userRepository.findOne(id,{
+      relations : ['categories']
+    });
+    if(!user) {
+      throw new NotFoundException("no user found") ;
+    }
+    return user.categories;
+  }
+
+  // async getUsersForCategory(id:number): Promise<UserEntity[]> {
+  //   const users = await this.userRepository.findOne(id,{
+  //     relations : ['categories']
+  //   });
+  //   if(!user) {
+  //     throw new NotFoundException("no user found") ;
+  //   }
+  //  // return user.categories;
+  // }
 
   
 }

@@ -1,9 +1,11 @@
 import { UserEntity } from './entity/user.entity';
 import { Repository } from 'typeorm';
 import { AddUserDto } from './dto/add-user.dto';
+import { CategoryEntity } from "src/chat/entity/category.entity";
 export declare class UserService {
     private userRepository;
-    constructor(userRepository: Repository<UserEntity>);
+    private readonly categoryRepository;
+    constructor(userRepository: Repository<UserEntity>, categoryRepository: Repository<CategoryEntity>);
     findAll(): Promise<UserEntity[]>;
     findOne(id: string): Promise<UserEntity>;
     remove(id: string): Promise<void>;
@@ -11,4 +13,6 @@ export declare class UserService {
     createUser(addUserDto: AddUserDto): Promise<UserEntity>;
     findUserByUsername(username: string): Promise<UserEntity>;
     updateUser(user: UserEntity): Promise<import("typeorm").UpdateResult>;
+    addCategories(cats: number[], user: UserEntity): Promise<UserEntity>;
+    getCategoriesForUser(id: number): Promise<CategoryEntity[]>;
 }

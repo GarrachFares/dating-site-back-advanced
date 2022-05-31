@@ -90,16 +90,19 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
 
   @SubscribeMessage('createRoom')
   async onCreateRoom(socket: Socket, room: RoomI) {
-    //console.log(socket.data.user);
-    //console.log(room.users) ;
-    //console.log(room);
-    // console.log(socket.data.user);
-    // console.log(room.users) ;
     const createRoom : RoomI = await this.roomService.createRoom(room,socket.data.user) 
     const user = createRoom.users[0]
+
+    //this line updates all rooms if a new room created , can be optimized
     const connections : ConnectedUserI[] = await this.connectedUserService.findByUser(user)  
+    //const connections : ConnectedUserI[] = await this.connectedUserService.findAll()
+    console.log(connections);
+
+
     const rooms = await this.roomService.getRoomsForUser(user.id,{page:1,limit:10})
     for(const connection of connections) {
+      //delete this line to reset
+      //const rooms = await this.roomService.getRoomsForUser(connection.user.id,{page:1,limit:10})
       await this.server.to(connection.socketId).emit('rooms', rooms);
     }
     //return await this.roomService.createRoom(room,socket.data.user);
@@ -116,6 +119,20 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     // send last messages from room to user 
     console.log(messages)
     await this.server.to(socket.id).emit('messages', messages); 
+
+
+    //
+    this.notifyUsersWithUpdatedRoom(room);
+
+  }
+
+  async notifyUsersWithUpdatedRoom(room: RoomI) {
+    const joinedRooms : JoinedRoomI[] = await this.joinedRoomService.findUsersByRoom(room) ;
+    const joinedUsers = joinedRooms.map(joinedRoom => joinedRoom.user)
+    // send new message to all joined users
+    for(const user of joinedRooms){
+      await this.server.to(user.socketId).emit('connectedUserAdded', joinedUsers);
+    }
   }
 
   @SubscribeMessage('paginateRooms')
@@ -128,8 +145,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
   }
 
   @SubscribeMessage('leaveRoom')
-  async onLeaveRoom(socket: Socket) {
+  async onLeaveRoom(socket: Socket , room: RoomI) {
+    
     await this.joinedRoomService.deleteBySocketId(socket.id);
+    this.notifyUsersWithUpdatedRoom(room)
+
   }
 
 

@@ -1,10 +1,11 @@
-import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { timeStampable } from '../../Generics/timeStampable.entity';
 import { UserRoleEnum } from "../../Generics/enums/user-role.enum";
 import { RoomEntity } from 'src/chat/entity/room.entity';
 import { MessageEntity } from "../../chat/entity/message.entity";
 import { ConnectedUserEntity } from "src/chat/entity/connected.user.entity";
 import { JoinedRoomEntity } from "src/chat/entity/joined.room.entity";
+import { CategoryEntity } from "src/chat/entity/category.entity";
 
 @Entity('user')
 export class UserEntity extends timeStampable {
@@ -64,5 +65,9 @@ export class UserEntity extends timeStampable {
 
   @Column("simple-array")
   categoris:string[];
+
+  @ManyToMany(() => CategoryEntity)
+  @JoinTable()
+  categories: CategoryEntity[]
 
 }

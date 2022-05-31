@@ -15,12 +15,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
+const user_decorator_1 = require("../decorators/user.decorator");
+const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
     }
     findAll() {
         return this.userService.findAll();
+    }
+    addCategories(categories, user) {
+        console.log("user : ", user);
+        return this.userService.addCategories(categories.categories, user);
     }
     findOneById(id) {
         return this.userService.findOne(id);
@@ -32,6 +38,15 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.Post)('/addcategories'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, user_decorator_1.User)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "addCategories", null);
 __decorate([
     (0, common_1.Get)('/:id'),
     __param(0, (0, common_1.Param)()),
