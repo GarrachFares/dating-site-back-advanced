@@ -10,6 +10,7 @@ export interface PayloadInterface {
     role: string;
     image:string;
     birthdate:string;
+    sex:string;
     categories:string[];
     
   }

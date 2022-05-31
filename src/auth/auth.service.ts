@@ -52,7 +52,8 @@ export class AuthService {
             role:user.role ,
             id:user.id,
             image:user.image,
-            birthdate:user.birthDate
+            birthdate:user.birthDate,
+            sex:user.sex
           }
           const jwt = await this.jwtService.sign(payload);
           return {
@@ -89,7 +90,8 @@ export class AuthService {
           email:user.email,
           role:user.role ,
           id:user.id,
-          birthdate:user.birthDate
+          birthdate:user.birthDate,
+          sex:user.sex
         }
         console.log(payload);
         const jwt = await this.jwtService.sign(payload);
@@ -142,7 +144,8 @@ export class AuthService {
           role:user.role ,
           id:user.id,
           birthdate:user.birthDate,
-          image:user.image
+          image:user.image,
+          sex:user.sex
         }
         console.log(payload);
         const jwt = await this.jwtService.sign(payload);
