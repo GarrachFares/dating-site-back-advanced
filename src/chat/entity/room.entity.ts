@@ -3,6 +3,7 @@ import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, Ma
 import { CategoryEntity } from "./category.entity";
 import { JoinedRoomEntity } from "./joined.room.entity";
 import { MessageEntity } from "./message.entity";
+import { MatchingEntity } from "./matching.entity";
 
 @Entity()
 export class RoomEntity {
@@ -35,5 +36,8 @@ export class RoomEntity {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @OneToMany(()=>MatchingEntity,matches =>matches.room)
+  matches: MatchingEntity[]
 
 } 

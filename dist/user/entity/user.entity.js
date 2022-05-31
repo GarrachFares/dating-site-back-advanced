@@ -18,6 +18,8 @@ const message_entity_1 = require("../../chat/entity/message.entity");
 const connected_user_entity_1 = require("../../chat/entity/connected.user.entity");
 const joined_room_entity_1 = require("../../chat/entity/joined.room.entity");
 const category_entity_1 = require("../../chat/entity/category.entity");
+const gender_enum_1 = require("../../Generics/enums/gender.enum");
+const matching_entity_1 = require("../../chat/entity/matching.entity");
 let UserEntity = class UserEntity extends timeStampable_entity_1.timeStampable {
 };
 __decorate([
@@ -61,6 +63,13 @@ __decorate([
     __metadata("design:type", String)
 ], UserEntity.prototype, "role", void 0);
 __decorate([
+    (0, typeorm_1.Column)({
+        type: "enum",
+        enum: gender_enum_1.GenderEnum
+    }),
+    __metadata("design:type", String)
+], UserEntity.prototype, "sexe", void 0);
+__decorate([
     (0, typeorm_1.Column)({ type: 'date', nullable: true }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "birthDate", void 0);
@@ -101,6 +110,10 @@ __decorate([
     (0, typeorm_1.JoinTable)(),
     __metadata("design:type", Array)
 ], UserEntity.prototype, "categories", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => matching_entity_1.MatchingEntity, matches => matches.user),
+    __metadata("design:type", Array)
+], UserEntity.prototype, "matches", void 0);
 UserEntity = __decorate([
     (0, typeorm_1.Entity)('user')
 ], UserEntity);

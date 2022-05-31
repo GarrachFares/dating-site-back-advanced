@@ -6,6 +6,9 @@ import { MessageEntity } from "../../chat/entity/message.entity";
 import { ConnectedUserEntity } from "src/chat/entity/connected.user.entity";
 import { JoinedRoomEntity } from "src/chat/entity/joined.room.entity";
 import { CategoryEntity } from "src/chat/entity/category.entity";
+import { GenderEnum } from "../../Generics/enums/gender.enum";
+import { MatchingEntity } from "../../chat/entity/matching.entity";
+import { matches } from "class-validator";
 
 @Entity('user')
 export class UserEntity extends timeStampable {
@@ -39,6 +42,12 @@ export class UserEntity extends timeStampable {
   })
   role : string ;
 
+  @Column({
+    type : "enum",
+    enum : GenderEnum
+  })
+  sexe : string ;
+
   @Column({ type: 'date' , nullable : true})
   birthDate: string;
 
@@ -69,5 +78,9 @@ export class UserEntity extends timeStampable {
   @ManyToMany(() => CategoryEntity)
   @JoinTable()
   categories: CategoryEntity[]
+
+  @OneToMany(()=>MatchingEntity,matches =>matches.user)
+  matches: MatchingEntity[]
+
 
 }

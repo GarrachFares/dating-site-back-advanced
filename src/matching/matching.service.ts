@@ -1,11 +1,29 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from "@nestjs/typeorm";
+import { UserEntity } from "../user/entity/user.entity";
+import { Repository } from "typeorm";
+import { JoinedRoomEntity } from "../chat/entity/joined.room.entity";
+import { MatchingEntity } from "../chat/entity/matching.entity";
+import { UserI } from "../chat/interfaces/user.interface";
+import { RoomI } from "../chat/interfaces/room.interface";
+import { UserService } from "../user/user.service";
+import { RoomService } from "../chat/service/room-service/room/room.service";
 
 @Injectable()
 export class MatchingService {
+
+  constructor(
+    @InjectRepository(MatchingEntity)
+    private matchingRepository: Repository<MatchingEntity>,
+    private userService : UserService,
+    private roomService : RoomService) {
+  }
+
   /*choice will receive an array of objects of the form :
     {
     "pseudoName" : "flen",
-    "sexe" : "M" or "W"
+    "sexe" : "M" or "W",
+    "roomId" : ""
     "preferenceList" : ["foulena1",foulena2","foulena3","foulena4"]
     }
   * */
@@ -46,6 +64,18 @@ export class MatchingService {
     }
     return stableMarriage(matrix,mapInv)
   };
+
+  async add(prefer: any, user: UserI, roomID: number) {
+    let match : MatchingEntity
+    match = await this.matchingRepository.findOne({ where: { user: user.id, room: roomID } })
+    if (!match) {
+      match = new MatchingEntity() ;
+    }
+    match.preferenceList = prefer;
+    match.user = await this.userService.findUserByUsername(user.username)
+    match.room = await this.roomService.getRoomEntityById(roomID)
+    await this.matchingRepository.save(match)
+  }
 }
 
 
@@ -139,4 +169,8 @@ function stableMarriage( prefer,map)
   console.log("Woman      Man");
   for (var i = 0; i < N; i++)
     console.log(" " + map.get(i+N) + "       " + map.get(wPartner[i]));
+  const payload = new Array()
+  for (var i = 0; i < N; i++)
+    payload.push([map.get(i+N),map.get(wPartner[i])]);
+  return payload ;
 }

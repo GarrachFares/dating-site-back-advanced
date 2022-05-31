@@ -172,7 +172,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
 
   @SubscribeMessage('getMessages')
   async onGetMessages(socket : Socket){
-    console.log("Hiiiiiiiiiiii");
    // const room = await this.joinedRoomService.findByUser(socket.data.user)  fix this !!!
    const messages  = []//await this.messageService.findMessagesForRoom(room,{})
     //console.log(messages);

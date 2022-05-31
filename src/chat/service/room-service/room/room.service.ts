@@ -55,4 +55,9 @@ export class RoomService {
     room.users.push(creator);
     return room;
 
-}}
+}
+
+  async getRoomEntityById(id: number) : Promise<RoomEntity> {
+    return this.roomRepository.findOne(id);
+  }
+}
