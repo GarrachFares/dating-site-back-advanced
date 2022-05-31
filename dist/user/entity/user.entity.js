@@ -15,6 +15,8 @@ const timeStampable_entity_1 = require("../../Generics/timeStampable.entity");
 const user_role_enum_1 = require("../../Generics/enums/user-role.enum");
 const room_entity_1 = require("../../chat/entity/room.entity");
 const message_entity_1 = require("../../chat/entity/message.entity");
+const connected_user_entity_1 = require("../../chat/entity/connected.user.entity");
+const joined_room_entity_1 = require("../../chat/entity/joined.room.entity");
 let UserEntity = class UserEntity extends timeStampable_entity_1.timeStampable {
 };
 __decorate([
@@ -74,6 +76,14 @@ __decorate([
     __metadata("design:type", Array)
 ], UserEntity.prototype, "rooms", void 0);
 __decorate([
+    (0, typeorm_1.OneToMany)(() => connected_user_entity_1.ConnectedUserEntity, connection => connection.user),
+    __metadata("design:type", Array)
+], UserEntity.prototype, "connections", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => joined_room_entity_1.JoinedRoomEntity, joinedRoom => joinedRoom.room),
+    __metadata("design:type", Array)
+], UserEntity.prototype, "joinedRooms", void 0);
+__decorate([
     (0, typeorm_1.OneToMany)(() => message_entity_1.MessageEntity, messages => messages.user),
     __metadata("design:type", Array)
 ], UserEntity.prototype, "messages", void 0);
@@ -81,6 +91,10 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "image", void 0);
+__decorate([
+    (0, typeorm_1.Column)("simple-array"),
+    __metadata("design:type", Array)
+], UserEntity.prototype, "categoris", void 0);
 UserEntity = __decorate([
     (0, typeorm_1.Entity)('user')
 ], UserEntity);

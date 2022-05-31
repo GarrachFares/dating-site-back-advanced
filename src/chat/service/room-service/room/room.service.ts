@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IPaginationOptions,paginate, Pagination } from 'nestjs-typeorm-paginate';
-import { PayloadInterface } from 'src/auth/interfaces/payload.interface';
+//import { PayloadInterface } from 'src/auth/interfaces/payload.interface';
 import { RoomEntity } from 'src/chat/entity/room.entity';
 import { RoomI } from 'src/chat/interfaces/room.interface';
 import { UserEntity } from 'src/user/entity/user.entity';
@@ -21,6 +21,13 @@ export class RoomService {
     const newRoom = await this.addCreatorToRoom(room, creator);
     return await this.roomRepository.save(newRoom);
   }
+
+  async getRoom(roomId:number) : Promise<RoomI> {
+    return this.roomRepository.findOne(roomId,{
+      relations : ['users']
+    });
+  }
+
 
   async getRoomsForUser(userId: number, options: IPaginationOptions): Promise<Pagination<RoomI>> {
     const query = this.roomRepository

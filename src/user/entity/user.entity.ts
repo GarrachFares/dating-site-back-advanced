@@ -3,6 +3,8 @@ import { timeStampable } from '../../Generics/timeStampable.entity';
 import { UserRoleEnum } from "../../Generics/enums/user-role.enum";
 import { RoomEntity } from 'src/chat/entity/room.entity';
 import { MessageEntity } from "../../chat/entity/message.entity";
+import { ConnectedUserEntity } from "src/chat/entity/connected.user.entity";
+import { JoinedRoomEntity } from "src/chat/entity/joined.room.entity";
 
 @Entity('user')
 export class UserEntity extends timeStampable {
@@ -48,10 +50,19 @@ export class UserEntity extends timeStampable {
   @ManyToMany(() => RoomEntity, room => room.users)
   rooms: RoomEntity[]
 
+  @OneToMany(()=> ConnectedUserEntity , connection => connection.user ) 
+  connections: ConnectedUserEntity[] ;
+
+  @OneToMany(()=> JoinedRoomEntity , joinedRoom => joinedRoom.room )
+  joinedRooms: JoinedRoomEntity[]
+
   @OneToMany(()=>MessageEntity,messages=>messages.user)
   messages : MessageEntity[]
 
   @Column({nullable: true})
     image: string;
+
+  @Column("simple-array")
+  categoris:string[];
 
 }
