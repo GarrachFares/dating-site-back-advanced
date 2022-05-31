@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { ConfigModule } from "@nestjs/config";
 import { AuthModule } from './auth/auth.module';
 import { ChatModule } from './chat/chat.module';
+import { MatchingModule } from './matching/matching.module';
 import * as dotenv from 'dotenv'
 
 dotenv.config();
@@ -28,7 +29,8 @@ dotenv.config();
     }),
     UserModule,
     AuthModule,
-    ChatModule],
+    ChatModule,
+    MatchingModule],
   controllers: [AppController],
   providers: [AppService],
 })
