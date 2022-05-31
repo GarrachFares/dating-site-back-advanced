@@ -9,10 +9,10 @@ export class MatchingController {
   }
 
   @Post('all')
-  choice(@Body() list : any){
+  finalChoice(@Body() list : any){
     const prefer = list['listPerson']
     console.log(list);
-    return this.matchingService.choice(prefer) ;
+    return this.matchingService.finalChoice(prefer) ;
   }
 
   @UseGuards(JwtAuthGuard)

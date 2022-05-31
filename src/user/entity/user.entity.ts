@@ -55,7 +55,7 @@ export class UserEntity extends timeStampable {
   country : string ;
 
   @Column({nullable:true})
-  city : string ;
+  city : string ;match
 
   @ManyToMany(() => RoomEntity, room => room.users)
   rooms: RoomEntity[]
@@ -72,9 +72,6 @@ export class UserEntity extends timeStampable {
   @Column({nullable: true})
     image: string;
 
-
-  @Column("simple-array")
-  categoris:string[];
 
   @ManyToMany(() => CategoryEntity)
   @JoinTable()

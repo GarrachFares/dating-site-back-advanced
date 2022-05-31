@@ -102,10 +102,6 @@ __decorate([
     __metadata("design:type", String)
 ], UserEntity.prototype, "image", void 0);
 __decorate([
-    (0, typeorm_1.Column)("simple-array"),
-    __metadata("design:type", Array)
-], UserEntity.prototype, "categoris", void 0);
-__decorate([
     (0, typeorm_1.ManyToMany)(() => category_entity_1.CategoryEntity),
     (0, typeorm_1.JoinTable)(),
     __metadata("design:type", Array)

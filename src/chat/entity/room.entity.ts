@@ -40,4 +40,6 @@ export class RoomEntity {
   @OneToMany(()=>MatchingEntity,matches =>matches.room)
   matches: MatchingEntity[]
 
+  @Column({default : 2})
+  max_number : number ;
 } 

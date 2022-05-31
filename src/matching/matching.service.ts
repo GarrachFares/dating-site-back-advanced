@@ -8,6 +8,7 @@ import { UserI } from "../chat/interfaces/user.interface";
 import { RoomI } from "../chat/interfaces/room.interface";
 import { UserService } from "../user/user.service";
 import { RoomService } from "../chat/service/room-service/room/room.service";
+import { RoomEntity } from "../chat/entity/room.entity";
 
 @Injectable()
 export class MatchingService {
@@ -15,6 +16,8 @@ export class MatchingService {
   constructor(
     @InjectRepository(MatchingEntity)
     private matchingRepository: Repository<MatchingEntity>,
+    @InjectRepository(RoomEntity)
+    private roomRepository : Repository<RoomEntity>,
     private userService : UserService,
     private roomService : RoomService) {
   }
@@ -27,7 +30,7 @@ export class MatchingService {
     "preferenceList" : ["foulena1",foulena2","foulena3","foulena4"]
     }
   * */
-  choice(prefer : Object[]) {
+  finalChoice(prefer : Object[]) {
     const N = prefer.length / 2
     //console.log(prefer);
     const map = new Map();
@@ -68,13 +71,25 @@ export class MatchingService {
   async add(prefer: any, user: UserI, roomID: number) {
     let match : MatchingEntity
     match = await this.matchingRepository.findOne({ where: { user: user.id, room: roomID } })
+    let theRoom = await this.roomService.getRoomEntityById(roomID)
     if (!match) {
       match = new MatchingEntity() ;
+      theRoom.max_number--;
+      console.log( theRoom.max_number);
+      await this.roomRepository.save(theRoom);
     }
     match.preferenceList = prefer;
     match.user = await this.userService.findUserByUsername(user.username)
-    match.room = await this.roomService.getRoomEntityById(roomID)
+    match.room = theRoom
     await this.matchingRepository.save(match)
+    if(theRoom.max_number==0){
+      console.log("here");
+      const list  = await this.matchingRepository.find({where:
+          {room:theRoom.id},
+            relations: [`user`] })
+      console.log("people ",list);
+      //this.finalChoice()
+    }
   }
 }
 
