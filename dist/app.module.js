@@ -16,6 +16,7 @@ const user_module_1 = require("./user/user.module");
 const config_1 = require("@nestjs/config");
 const auth_module_1 = require("./auth/auth.module");
 const chat_module_1 = require("./chat/chat.module");
+const matching_module_1 = require("./matching/matching.module");
 const dotenv = require("dotenv");
 dotenv.config();
 let AppModule = class AppModule {
@@ -41,7 +42,8 @@ AppModule = __decorate([
             }),
             user_module_1.UserModule,
             auth_module_1.AuthModule,
-            chat_module_1.ChatModule
+            chat_module_1.ChatModule,
+            matching_module_1.MatchingModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

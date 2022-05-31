@@ -29,7 +29,6 @@ export class UserController {
     return this.userService.findOne(id);
   }
 
-  
 
   
 
