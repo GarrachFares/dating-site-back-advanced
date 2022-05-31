@@ -1,5 +1,6 @@
 import { UserEntity } from "src/user/entity/user.entity";
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { RoomEntity } from "./room.entity";
 
 @Entity()
 export class CategoryEntity {
@@ -16,5 +17,8 @@ export class CategoryEntity {
 
   @ManyToMany(() => UserEntity, user => user.categories)
   users: UserEntity[];
+
+  @OneToMany(()=> RoomEntity , room => room.category )
+  rooms: RoomEntity[] ;
 
 } 

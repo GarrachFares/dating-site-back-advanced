@@ -59,6 +59,15 @@ let UserService = class UserService {
         user.categories = categories;
         return this.userRepository.save(user);
     }
+    async getCategoriesForUser(id) {
+        const user = await this.userRepository.findOne(id, {
+            relations: ['categories']
+        });
+        if (!user) {
+            throw new common_1.NotFoundException("no user found");
+        }
+        return user.categories;
+    }
 };
 UserService = __decorate([
     (0, common_1.Injectable)(),

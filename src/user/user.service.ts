@@ -64,5 +64,25 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
+  async getCategoriesForUser(id:number): Promise<CategoryEntity[]> {
+    const user = await this.userRepository.findOne(id,{
+      relations : ['categories']
+    });
+    if(!user) {
+      throw new NotFoundException("no user found") ;
+    }
+    return user.categories;
+  }
+
+  // async getUsersForCategory(id:number): Promise<UserEntity[]> {
+  //   const users = await this.userRepository.findOne(id,{
+  //     relations : ['categories']
+  //   });
+  //   if(!user) {
+  //     throw new NotFoundException("no user found") ;
+  //   }
+  //  // return user.categories;
+  // }
+
   
 }

@@ -14,4 +14,5 @@ export declare class UserService {
     findUserByUsername(username: string): Promise<UserEntity>;
     updateUser(user: UserEntity): Promise<import("typeorm").UpdateResult>;
     addCategories(cats: number[], user: UserEntity): Promise<UserEntity>;
+    getCategoriesForUser(id: number): Promise<CategoryEntity[]>;
 }
