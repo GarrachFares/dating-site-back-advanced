@@ -72,8 +72,6 @@ export class UserEntity extends timeStampable {
   @Column({nullable: true})
     image: string;
 
-  @Column()
-    sex: string;
 
   @Column("simple-array")
   categoris:string[];
