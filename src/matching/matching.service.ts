@@ -9,6 +9,7 @@ import { RoomI } from "../chat/interfaces/room.interface";
 import { UserService } from "../user/user.service";
 import { RoomService } from "../chat/service/room-service/room/room.service";
 import { RoomEntity } from "../chat/entity/room.entity";
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class MatchingService {
@@ -21,6 +22,8 @@ export class MatchingService {
     private userService : UserService,
     private roomService : RoomService) {
   }
+
+  observable$ = new BehaviorSubject<any>(null);
 
   /*choice will receive an array of objects of the form :
     {
@@ -88,7 +91,22 @@ export class MatchingService {
           {room:theRoom.id},
             relations: [`user`] })
       console.log("people ",list);
-      //this.finalChoice()
+
+      const pref = list.map(match => {
+        return {
+          pseudoName: match.user.username,
+          sexe: match.user.sexe,
+          preferenceList: match.preferenceList
+        }
+      })
+      console.log(this.finalChoice(pref))
+
+      //console.log('aaaaaaaaaaaa');
+      this.roomService.createRoomForPairs(this.finalChoice(pref), this.observable$)
+      return this.observable$ ;
+
+      
+      // service here 
     }
   }
 }

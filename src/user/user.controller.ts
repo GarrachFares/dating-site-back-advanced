@@ -4,6 +4,7 @@ import { UserEntity } from './entity/user.entity';
 
 import { User } from 'src/decorators/user.decorator';
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
+import { CategoryEntity } from "src/chat/entity/category.entity";
 
 
 
@@ -22,6 +23,12 @@ export class UserController {
     console.log("user : ",user);
    return this.userService.addCategories(categories.categories,user);
 
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/categories')
+  getUserCategories(@User() user): Promise<CategoryEntity[]> {
+    return this.userService.getCategoriesForUser(user.id);
   }
 
   @Get('/:id')

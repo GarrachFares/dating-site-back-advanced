@@ -18,6 +18,12 @@ import { RoomI } from '../interfaces/room.interface';
 import { MessageService } from '../service/message/message.service';
 import { JoinedRoomI } from '../interfaces/joined.room.interface';
 import { ConnectedUserI } from '../interfaces/connected.user.interface';
+import { MatchingService } from 'src/matching/matching.service';
+
+interface Data {
+  room : RoomI;
+  socketId : string ;
+}
 
 @WebSocketGateway({ cors: { origin: ['https://hoppscotch.io', 'http://localhost:3000', 'http://localhost:4200'] } })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, OnModuleInit {
@@ -31,17 +37,38 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
               private authService: AuthService,
               private messageService : MessageService,
               private connectedUserService : ConnectedUserService,
-              private joinedRoomService : JoinedRoomService) {}
+              private joinedRoomService : JoinedRoomService ,
+              private matchingAndRoomService : RoomService ,
+              private matchingService : MatchingService
+              ) {
+                  
+              }
+
+           
 
   async onModuleInit() {
+   
       await this.connectedUserService.deleteAll();
       await this.joinedRoomService.deleteAll();
   }            
+
 
   async handleConnection(socket: Socket) {
 
     console.log("on connect");
     this.server.emit('message','test')
+    
+    //change this
+    this.matchingAndRoomService.getMatchedRooms().subscribe(obj => {
+      if(obj){
+        this.createdMatchRoom(obj.socketId,obj.room) ;
+        
+      }
+      console.log("inside the constructor of observable");
+       
+    }) ;
+    //untill this
+
     try {
       
       const decodedToken = await this.authService.verifyJwt(socket.handshake.headers.authorization);
@@ -83,10 +110,30 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     
   }
 
+  async createdMatchRoom(socketId: string, room: RoomI){
+    this.server.to(socketId).emit('matchedRoom', room);
+    console.log("matchedRoom bitch ...",room);
+  }
+
+  @SubscribeMessage('sendChoice')
+  async onSentChoice(socket: Socket, data: any) {
+     let obs = await this.matchingService.add(data.preferenceList,socket.data.user,data.room)
+     if (obs)
+     obs.subscribe((obj : Data) => {
+      if(obj){
+        console.log(obj)
+      this.server.to(obj.socketId).emit('matchedRoom', obj.room);
+      }
+      
+    })
+  }
+
+
   private disconnect(socket: Socket) {
     socket.emit('Error12', new UnauthorizedException());
     socket.disconnect();
   }
+  
 
   @SubscribeMessage('createRoom')
   async onCreateRoom(socket: Socket, room: RoomI) {
@@ -142,6 +189,15 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     const rooms = await this.roomService.getRoomsForUser(socket.data.user.id,page);
     rooms.meta.currentPage -- //angular paginator
     return this.server.to(socket.id).emit('rooms', rooms);
+  }
+
+  @SubscribeMessage('paginateMatchedRooms')
+  async  onPaginateMatchedRoom(socket: Socket, page : PageI) {
+    page.limit = page.limit > 100 ? 100 : page.limit
+    page.page ++ ; //angular paginator
+    const rooms = await this.roomService.getMatchedRoomsForUser(socket.data.user.id,page);
+    rooms.meta.currentPage -- //angular paginator
+    return this.server.to(socket.id).emit('matchedRooms', rooms);
   }
 
   @SubscribeMessage('leaveRoom')

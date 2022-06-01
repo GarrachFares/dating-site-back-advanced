@@ -28,6 +28,9 @@ let UserController = class UserController {
         console.log("user : ", user);
         return this.userService.addCategories(categories.categories, user);
     }
+    getUserCategories(user) {
+        return this.userService.getCategoriesForUser(user.id);
+    }
     findOneById(id) {
         return this.userService.findOne(id);
     }
@@ -47,6 +50,14 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "addCategories", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.Get)('/categories'),
+    __param(0, (0, user_decorator_1.User)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getUserCategories", null);
 __decorate([
     (0, common_1.Get)('/:id'),
     __param(0, (0, common_1.Param)()),

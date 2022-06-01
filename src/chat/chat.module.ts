@@ -15,15 +15,17 @@ import { JoinedRoomEntity } from './entity/joined.room.entity';
 import { JoinedRoomService } from './service/joined-room/joined-room.service';
 import { MessageService } from './service/message/message.service';
 import { CategoryEntity } from './entity/category.entity';
+import { MatchingModule } from 'src/matching/matching.module';
+import { UserService } from 'src/user/user.service';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([RoomEntity,MessageEntity,ConnectedUserEntity,MessageEntity,JoinedRoomEntity,CategoryEntity]),AuthModule,UserModule,JwtModule.register({
+  imports:[TypeOrmModule.forFeature([RoomEntity,MessageEntity,UserEntity,ConnectedUserEntity,MessageEntity,JoinedRoomEntity,CategoryEntity]),AuthModule,MatchingModule,UserModule,JwtModule.register({
     secret: process.env.SECRET,
     signOptions: { expiresIn: '10h' },
   }),
   
 ],
-  providers: [ChatGateway, RoomService,MessageService,ConnectedUserService, JoinedRoomService],
+  providers: [ChatGateway, RoomService,MessageService,ConnectedUserService, JoinedRoomService,UserService],
   exports:[RoomService,MessageService]
 })
 export class ChatModule {}

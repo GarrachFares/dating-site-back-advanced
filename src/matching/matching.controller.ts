@@ -8,12 +8,12 @@ export class MatchingController {
   constructor(private matchingService :  MatchingService) {
   }
 
-  @Post('all')
-  finalChoice(@Body() list : any){
-    const prefer = list['listPerson']
-    console.log(list);
-    return this.matchingService.finalChoice(prefer) ;
-  }
+  // @Post('all')
+  // finalChoice(@Body() list : any){
+  //   const prefer = list['listPerson']
+  //   console.log(list);
+  //   return this.matchingService.finalChoice(prefer) ;
+  // }
 
   @UseGuards(JwtAuthGuard)
   @Post()
