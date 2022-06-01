@@ -145,7 +145,7 @@ export class AuthService {
           id:user.id,
           birthdate:user.birthDate,
           image:user.image,
-          sex:user.sexe
+          sexe:user.sexe
         }
         console.log(payload);
         const jwt = await this.jwtService.sign(payload);
