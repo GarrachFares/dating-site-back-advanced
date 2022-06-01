@@ -106,6 +106,23 @@ export class AuthController {
   //     return this.authService.addCategories(user.id,categories) ;
   // }
 
+//   @UseGuards(JwtAuthGuard)
+//   @Post('upload')
+//   @UseInterceptors(
+//     FileInterceptor('image', {
+//       storage: diskStorage({
+//         destination: './uploads/room-pictures',
+//         filename: editFileName,
+//       }),
+//       fileFilter: imageFileFilter,
+//     }),
+//   )
+//   async uploadedRoomImage(@UploadedFile() file,@Body() id: any) {
+//     console.log(file);
   
+//     return this.authService.RoomImage(file.filename,id)
+
+// }
+
 
 }

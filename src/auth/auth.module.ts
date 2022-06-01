@@ -6,6 +6,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import * as dotenv from 'dotenv';
 import { JwtStrategy } from './strategies/passport-jwt.strategy';
+import { ChatModule } from 'src/chat/chat.module';
 
 dotenv.config();
 

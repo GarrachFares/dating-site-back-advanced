@@ -17,6 +17,7 @@ import { MessageService } from './service/message/message.service';
 import { CategoryEntity } from './entity/category.entity';
 import { MatchingModule } from 'src/matching/matching.module';
 import { UserService } from 'src/user/user.service';
+import { ChatController } from './chat.controller';
 
 @Module({
   imports:[TypeOrmModule.forFeature([RoomEntity,MessageEntity,UserEntity,ConnectedUserEntity,MessageEntity,JoinedRoomEntity,CategoryEntity]),AuthModule,MatchingModule,UserModule,JwtModule.register({
@@ -26,6 +27,7 @@ import { UserService } from 'src/user/user.service';
   
 ],
   providers: [ChatGateway, RoomService,MessageService,ConnectedUserService, JoinedRoomService,UserService],
-  exports:[RoomService,MessageService]
+  exports:[RoomService,MessageService],
+  controllers: [ChatController]
 })
 export class ChatModule {}

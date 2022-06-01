@@ -52,4 +52,7 @@ export class RoomEntity {
 
   @Column({ default: 4 })
   max_number: number;
+
+  @Column({nullable: true})
+    image: string;
 }

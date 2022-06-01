@@ -7,4 +7,5 @@ export interface RoomI {
     users?: UserEntity[];
     created_at?: Date;
     updated_at?: Date;
+    image?:string;
   }

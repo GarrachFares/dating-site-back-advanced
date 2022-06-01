@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IPaginationOptions,paginate, Pagination } from 'nestjs-typeorm-paginate';
 //import { PayloadInterface } from 'src/auth/interfaces/payload.interface';
@@ -130,5 +130,31 @@ export class RoomService {
 
   async getRoomEntityById(id: number) : Promise<RoomEntity> {
     return this.roomRepository.findOne(id);
+  }
+
+  async updateRoom(room: RoomEntity ) {
+    const id = room.id
+    console.log(room);
+    return await this.roomRepository.update(id,room);
+  }
+
+  async RoomImage(image: any,id:any): Promise<any> {
+    const room = await this.getRoomEntityById(id);
+    if(!room) {
+      throw new NotFoundException("You are not allowed to change room ") ;
+    }
+   
+    room.image = image
+    console.log("this is the room",room);
+    
+    await this.updateRoom(room);
+    console.log("image has been added");
+    
+    
+    //test
+    
+    return {
+      msg:"picture has been uploaded"
+    }
   }
 }

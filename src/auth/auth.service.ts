@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt' ;
 import { CredentialsDto } from "../user/dto/credentials.dto";
 import { JwtService } from '@nestjs/jwt';
 import { use } from "passport";
+import { RoomService } from "src/chat/service/room-service/room/room.service";
 
 @Injectable()
 export class AuthService {
@@ -190,4 +191,7 @@ export class AuthService {
         * */
         return this.jwtService.verifyAsync(jwt,{ignoreExpiration:true});
       }
+
+
+      
 }
